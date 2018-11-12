@@ -254,7 +254,7 @@ export default class ModalDropdown extends Component {
       }
       positionStyle.right = rightSpace - this._buttonFrame.w;
     }
-
+    this.props.keepLeft ? positionStyle.left=0 : null;
     return adjustFrame ? adjustFrame(positionStyle) : positionStyle;
   }
 
