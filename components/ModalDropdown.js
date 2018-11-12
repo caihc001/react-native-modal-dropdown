@@ -200,8 +200,12 @@ export default class ModalDropdown extends Component {
     const {animated, accessible, dropdownStyle} = this.props;
     const {showDropdown, loading} = this.state;
     if (showDropdown && this._buttonFrame) {
-      const frameStyle = this._calcPosition();
+      let frameStyle = this._calcPosition();
       const animationType = animated ? 'fade' : 'none';
+      let newstyle = JSON.parse(JSON.stringify(frameStyle))
+      // newstyle.top = 0;
+      newstyle.height = '100%'
+      frameStyle.top = 0;
       return (
         <Modal animationType={animationType}
                visible={true}
@@ -213,9 +217,10 @@ export default class ModalDropdown extends Component {
                                     disabled={!showDropdown}
                                     onPress={this._onModalPress}
           >
-            <View style={styles.modal}>
+            <View style={[styles.modal,newstyle]}>
               <View style={[styles.dropdown, dropdownStyle, frameStyle]}>
                 {loading ? this._renderLoading() : this._renderDropdown()}
+                
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -406,7 +411,8 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   modal: {
-    flexGrow: 1
+    flexGrow: 1,
+    backgroundColor:'rgba(0,0,0,0.3)'
   },
   dropdown: {
     position: 'absolute',
