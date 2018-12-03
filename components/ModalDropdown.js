@@ -165,7 +165,6 @@ export default class ModalDropdown extends Component {
   _renderButton() {
     const {disabled, accessible, children, textStyle} = this.props;
     const {buttonText} = this.state;
-
     return (
       <TouchableOpacity ref={button => this._button = button}
                         disabled={disabled}
@@ -176,7 +175,7 @@ export default class ModalDropdown extends Component {
           children ||
           (
             <View style={styles.button}>
-              <Text style={[styles.buttonText, textStyle]}
+              <Text style={[styles.buttonText, textStyle,{color:this.state.showDropdown?'#e66b65':null}]}
                     numberOfLines={1}
               >
                 {buttonText}
@@ -206,6 +205,7 @@ export default class ModalDropdown extends Component {
       // newstyle.top = 0;
       newstyle.height = '100%'
       frameStyle.top = 0;
+      let top = newstyle.top;
       return (
         <Modal animationType={animationType}
                visible={true}
@@ -217,12 +217,16 @@ export default class ModalDropdown extends Component {
                                     disabled={!showDropdown}
                                     onPress={this._onModalPress}
           >
-            <View style={[styles.modal,newstyle]}>
-              <View style={[styles.dropdown, dropdownStyle, frameStyle]}>
-                {loading ? this._renderLoading() : this._renderDropdown()}
-                
-              </View>
+          <View>
+            <View style={{height:top,width:'100%',backgroundColor:'transparent'}}>
+
             </View>
+            <View style={[styles.modal,{height:'100%'}]}>
+                <View style={[styles.dropdown, dropdownStyle, frameStyle]}>
+                  {loading ? this._renderLoading() : this._renderDropdown()}
+                </View>
+            </View>
+          </View>   
           </TouchableWithoutFeedback>
         </Modal>
       );
@@ -238,7 +242,6 @@ export default class ModalDropdown extends Component {
 
     const dropdownHeight = (dropdownStyle && StyleSheet.flatten(dropdownStyle).height) ||
       StyleSheet.flatten(styles.dropdown).height;
-
     const bottomSpace = windowHeight - this._buttonFrame.y - this._buttonFrame.h;
     const rightSpace = windowWidth - this._buttonFrame.x;
     const showInBottom = bottomSpace >= dropdownHeight || bottomSpace >= this._buttonFrame.y;
